@@ -1,0 +1,21 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% block title %}我的博客{% endblock %}
+
+{% block content %}
+    <h1>我的博客</h1>
+    {%if tag %}
+        <h2>Posts tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+    {% for post in posts %}
+        <h2>
+        <a href={% url "blog:post_detail" post.slug %}>
+            {{ post.title }}</a>
+        </h2>
+        <p class="date">
+            Published {{ post.publish }} by {{ post.author }}
+        </p>
+        {{ post.body|truncatewords:30|markdown}}
+    {% endfor %}
+    {% include "pagenation.html" with page=posts%}
+{% endblock %}

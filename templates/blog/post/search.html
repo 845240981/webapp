@@ -1,0 +1,27 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% block title %}search{% endblock %}
+{% block content %}
+    {% if "q" in request.GET %}
+        <h1>Result about search</h1>
+        <h3>Found {{ total_results }} result{{ total_results|pluralize }}</h3>
+        {% for post in posts %}
+           {% with post=post.object %}
+            <h4><a href="{% url "blog:post_detail" post.slug %}">{{ post.title }}</a></h4>
+                {{ post.body|markdown|truncatewords:3}}
+            {% endwith %}
+        {% empty %}
+            <p>there is no  post about {{ keyword }}</p>
+        {% endfor %}
+    {% else %}
+        <h1>Search for post</h1>
+        <form action="." method="get">
+            <label>
+                <input type="text" class="textfield searchtip" name="q" size="24" value="">
+            </label>
+            <input type="submit" value="Serach">
+
+        </form>
+    {% endif %}
+
+{% endblock %}
